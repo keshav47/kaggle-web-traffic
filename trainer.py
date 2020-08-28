@@ -690,7 +690,8 @@ def predict(checkpoints, hparams, return_x=False, verbose=False, predict_window=
                 del var_list[var]
     else:
         var_list = None
-    saver = tf.train.Saver(name='eval_saver', var_list=var_list)
+    print("$$$$$$$$$=",var_list)
+    # saver = tf.train.Saver(name='eval_saver', var_list=var_list)
     x_buffer = []
     predictions = None
     with tf.Session(config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))) as sess:
