@@ -684,14 +684,15 @@ def predict(checkpoints, hparams, return_x=False, verbose=False, predict_window=
 
     if asgd:
         var_list = model.ema.variables_to_restore()
+        print("$$$$$$$$$=",var_list)
         prefix = f"m_{target_model}"
         for var in list(var_list.keys()):
             if var.endswith('ExponentialMovingAverage') and not var.startswith(prefix):
                 del var_list[var]
     else:
         var_list = None
-    print("$$$$$$$$$=",var_list)
-    # saver = tf.train.Saver(name='eval_saver', var_list=var_list)
+    
+    saver = tf.train.Saver(name='eval_saver', var_list=var_list)
     x_buffer = []
     predictions = None
     with tf.Session(config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))) as sess:
