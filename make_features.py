@@ -272,6 +272,11 @@ def run():
     args = parser.parse_args()
 
     # Get the data
+    print("********************")
+    print(args.start)
+    print(args.end)
+    print("********************")
+    
     df, nans, starts, ends = prepare_data(args.start, args.end, args.valid_threshold)
 
     # Our working date range
