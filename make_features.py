@@ -197,10 +197,9 @@ def lag_indexes(begin, end) -> List[pd.Series]:
     dr = pd.date_range(begin, end)
     # key is date, value is day index
     base_index = pd.Series(np.arange(0, len(dr)), index=dr)
-
     def lag(offset):
         dates = dr - offset
-        return pd.Series(data=base_index.loc[dates].fillna(-1).astype(np.int16).values, index=dr)
+        return pd.Series(data=base_index.reindex(index=dates).fillna(-1).astype(np.int16).values, index=dr)
 
     return [lag(pd.DateOffset(months=m)) for m in (3, 6, 9, 12)]
 
@@ -271,13 +270,9 @@ def run():
     parser.add_argument('--corr_backoffset', default=0, type=int, help='Offset for correlation calculation')
     args = parser.parse_args()
 
-    # Get the data
-    print("********************")
-    print(args.start)
-    print(args.end)
-    print("********************")
+    # Get the dat
     
-    df, nans, starts, ends = prepare_data(args.start, args.end, args.valid_threshold)
+    df, nans, starts, ends = prepare_data(args.start, args.end, args.valid_threshold) # read the df from the zip file and set page name as index
 
     # Our working date range
     data_start, data_end = df.columns[0], df.columns[-1]
